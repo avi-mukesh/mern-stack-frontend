@@ -1,5 +1,4 @@
 import { useGetNotesQuery } from "./notesApiSlice"
-import React from "react"
 import Note from "./Note"
 
 const NotesList = () => {
@@ -61,5 +60,4 @@ const NotesList = () => {
 
     return content
 }
-
 export default NotesList
