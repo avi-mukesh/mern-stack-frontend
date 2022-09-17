@@ -20,11 +20,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
             // putting this onQueryStarted here saves us from importing useDispatch into each component where we might need to logout
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
-                    // const { data } =
-                    await queryFulfilled
-                    // console.log(data)
+                    const { data } = await queryFulfilled
+                    console.log(data)
                     dispatch(logOut())
-                    dispatch(apiSlice.util.resetApiState()) // remove all existing cache entries
+                    setTimeout(
+                        () => dispatch(apiSlice.util.resetApiState()), // remove all existing cache entries
+                        1000
+                    )
+                    // 1 second delay is enough for it to realise that the noteslist or userslist has been unmounted
                 } catch (err) {
                     console.log(err)
                 }
