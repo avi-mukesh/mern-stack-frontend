@@ -1,12 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router-dom"
-
-import { useSelector } from "react-redux"
-import { selectNoteById } from "./notesApiSlice"
+import { useGetNotesQuery } from "./notesApiSlice"
+import { memo } from "react"
 
 const Note = ({ noteId }) => {
-    const note = useSelector((state) => selectNoteById(state, noteId))
+    // const note = useSelector((state) => selectNoteById(state, noteId))
+
+    // this way we get the note without making another network request
+    // we get the note from the data that has already been queried
+    const { note } = useGetNotesQuery("notesList", {
+        selectFromResult: ({ data }) => ({
+            note: data?.entities[noteId],
+        }),
+    })
+
     const navigate = useNavigate()
 
     if (note) {
@@ -53,4 +61,7 @@ const Note = ({ noteId }) => {
     }
 }
 
-export default Note
+const memoisedNote = memo(Note)
+
+// so component rerenders only if there are changes in the data
+export default memoisedNote
